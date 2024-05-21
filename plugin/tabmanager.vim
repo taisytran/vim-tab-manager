@@ -20,7 +20,7 @@ for [key, mapping] in items(g:tabmanager_mappings)
     if has_key(g:, 'tabmanager_custom_mappings') && has_key(g:tabmanager_custom_mappings, key)
         let mapping = g:tabmanager_custom_mappings[key]
     endif
-    execute 'nnoremap <silent>' mapping \(':'.key.'<CR>')
+    execute 'nnoremap <silent>' mapping ' :' . key . '<CR>'
 endfor
 
 " Mapping to rename the current tab
