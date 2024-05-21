@@ -1,33 +1,47 @@
-" Tab management key mappings
-nnoremap tn :tabnew<CR>
-nnoremap t1 :tabn 1<CR>
-nnoremap t2 :tabn 2<CR>
-nnoremap t3 :tabn 3<CR>
-nnoremap t4 :tabn 4<CR>
-nnoremap t5 :tabn 5<CR>
-nnoremap t6 :tabn 6<CR>
-nnoremap t7 :tabn 7<CR>
-nnoremap t8 :tabn 8<CR>
-nnoremap t9 :tabn 9<CR>
+" Default key mappings
+let g:tabmanager_mappings = {
+    \ 'new_tab': 'tn',
+    \ 'tab1': 't1',
+    \ 'tab2': 't2',
+    \ 'tab3': 't3',
+    \ 'tab4': 't4',
+    \ 'tab5': 't5',
+    \ 'tab6': 't6',
+    \ 'tab7': 't7',
+    \ 'tab8': 't8',
+    \ 'tab9': 't9',
+    \ 'next_tab': '<Tab>',
+    \ 'previous_tab': '<S-Tab>',
+    \ 'rename_tab': 'tr',
+\ }
 
-nnoremap <Tab> :tabnext<CR>
-nnoremap <S-Tab> :tabprevious<CR>
+" Apply key mappings
+for [key, mapping] in items(g:tabmanager_mappings)
+    if has_key(g:, 'tabmanager_custom_mappings') && has_key(g:tabmanager_custom_mappings, key)
+        let mapping = g:tabmanager_custom_mappings[key]
+    endif
+    execute 'nnoremap <silent>' mapping \(':'.key.'<CR>')
+endfor
+
+" Mapping to rename the current tab
+nnoremap <silent> <Plug>(tabmanager-rename) :call tabmanager#RenameTab()<CR>
+execute 'nnoremap <silent>' g:tabmanager_mappings['rename_tab'] ' <Plug>(tabmanager-rename)'
 
 " Function to rename the current tab
-function! RenameTab()
+function! tabmanager#RenameTab()
   let l:new_name = input('New tab name: ')
   if !empty(l:new_name)
     let t:tab_name = l:new_name
-    call UpdateTabline()
+    call tabmanager#UpdateTabline()
   endif
 endfunction
 
 " Update tabline to display custom tab names
-function! UpdateTabline()
-  set tabline=%!MyTabline()
+function! tabmanager#UpdateTabline()
+  set tabline=%!tabmanager#MyTabline()
 endfunction
 
-function! MyTabline()
+function! tabmanager#MyTabline()
   let s = ''
   for i in range(tabpagenr('$'))
     " Get the tab page number
@@ -49,6 +63,3 @@ function! MyTabline()
   let s .= '%#TabLineFill#%T'
   return s
 endfunction
-
-" Mapping to rename the current tab
-nnoremap tr :call RenameTab()<CR>
