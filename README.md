@@ -43,6 +43,28 @@ Here are the default key mappings provided by `vim-tab-manager`:
 
 - To rename the current tab, press `tr` and enter the new tab name when prompted.
 
+### Custom Key Mappings
+
+You can customize the key mappings by adding the following to your `.vimrc`:
+
+```vim
+let g:tabmanager_custom_mappings = {
+    \ 'new_tab': '<your-custom-mapping>',
+    \ 'rename_tab': '<your-custom-mapping>'
+\ }
+```
+
+Replace `<your-custom-mapping>` with your desired key mappings for opening a new tab and renaming the tab.
+
+For example:
+
+```vim
+let g:tabmanager_custom_mappings = {
+    \ 'new_tab': 'tt',           " Custom key mapping for opening a new tab
+    \ 'rename_tab': 'gr'         " Custom key mapping for renaming the current tab
+\ }
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,17 +1,44 @@
-" Tab management key mappings
-nnoremap tn :tabnew<CR>
-nnoremap t1 :tabn 1<CR>
-nnoremap t2 :tabn 2<CR>
-nnoremap t3 :tabn 3<CR>
-nnoremap t4 :tabn 4<CR>
-nnoremap t5 :tabn 5<CR>
-nnoremap t6 :tabn 6<CR>
-nnoremap t7 :tabn 7<CR>
-nnoremap t8 :tabn 8<CR>
-nnoremap t9 :tabn 9<CR>
+" Default key mappings
+let g:tabmanager_mappings = {
+    \ 'new_tab': 'tn',
+    \ 'tab1': 't1',
+    \ 'tab2': 't2',
+    \ 'tab3': 't3',
+    \ 'tab4': 't4',
+    \ 'tab5': 't5',
+    \ 'tab6': 't6',
+    \ 'tab7': 't7',
+    \ 'tab8': 't8',
+    \ 'tab9': 't9',
+    \ 'next_tab': '<Tab>',
+    \ 'previous_tab': '<S-Tab>',
+    \ 'rename_tab': 'tr',
+\ }
 
-nnoremap <Tab> :tabnext<CR>
-nnoremap <S-Tab> :tabprevious<CR>
+" Command mappings
+let s:commands = {
+    \ 'new_tab': 'tabnew',
+    \ 'tab1': 'tabn 1',
+    \ 'tab2': 'tabn 2',
+    \ 'tab3': 'tabn 3',
+    \ 'tab4': 'tabn 4',
+    \ 'tab5': 'tabn 5',
+    \ 'tab6': 'tabn 6',
+    \ 'tab7': 'tabn 7',
+    \ 'tab8': 'tabn 8',
+    \ 'tab9': 'tabn 9',
+    \ 'next_tab': 'tabnext',
+    \ 'previous_tab': 'tabprevious',
+    \ 'rename_tab': 'call RenameTab()',
+\ }
+
+" Apply key mappings
+for [key, mapping] in items(g:tabmanager_mappings)
+    if has_key(g:, 'tabmanager_custom_mappings') && has_key(g:tabmanager_custom_mappings, key)
+        let mapping = g:tabmanager_custom_mappings[key]
+    endif
+    execute 'nnoremap <silent>' mapping ':' . s:commands[key] . '<CR>'
+endfor
 
 " Function to rename the current tab
 function! RenameTab()
@@ -19,6 +46,8 @@ function! RenameTab()
   if !empty(l:new_name)
     let t:tab_name = l:new_name
     call UpdateTabline()
+  else
+    echo "Tab name cannot be empty!"
   endif
 endfunction
 
@@ -51,4 +80,4 @@ function! MyTabline()
 endfunction
 
 " Mapping to rename the current tab
-nnoremap tr :call RenameTab()<CR>
+nnoremap <silent> tr :call RenameTab()<CR>
